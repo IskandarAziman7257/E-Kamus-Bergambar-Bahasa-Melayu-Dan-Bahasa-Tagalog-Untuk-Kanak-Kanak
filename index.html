@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-kamus Bergambar Bahasa Melayu Dan Bahasa Tagalog Untuk Kanak-Kanak</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #3f51b5;
+            --accent-color: #ff9800;
+            --light-bg: #f0f8ff;
+            --item-bg: #e1f5fe;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .page {
+            display: none;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .active-page {
+            display: block;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            background-color: var(--secondary-color);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-btn {
+            background-color: transparent;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .nav-btn.active {
+            background-color: var(--accent-color);
+        }
+
+        .category {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .category-title {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 8px;
+            margin-top: 0;
+            font-size: 1.5em;
+        }
+
+        .items-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .item {
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: white;
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .item img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 3px solid #f5f5f5;
+        }
+
+        .item-name {
+            margin-top: 12px;
+            font-weight: bold;
+            color: #333;
+            background-color: var(--item-bg);
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .sound-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            width: 100%;
+        }
+
+        .sound-icon {
+            font-size: 0.9em;
+            cursor: pointer;
+            padding: 8px 5px;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            transition: all 0.3s ease;
+            width: 90%;
+            text-align: center;
+            box-sizing: border-box;
+            border: none;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .sound-icon:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            color: #666;
+            font-size: 0.9em;
+            background-color: white;
+            border-top: 1px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            .items-container {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 15px;
+            }
+            .item img {
+                height: 120px;
+            }
+            .item-name {
+                font-size: 1em;
+                min-height: 35px;
+            }
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 0.9em;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .sound-icon {
+                font-size: 0.8em;
+                padding: 6px 4px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .items-container {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+                gap: 12px;
+            }
+            .item img {
+                height: 100px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            .category-title {
+                font-size: 1.3em;
+            }
+            .nav-btn {
+                padding: 6px 10px;
+                font-size: 0.8em;
+            }
+            .sound-icon {
+                font-size: 0.75em;
+                padding: 5px 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>E-kamus Bergambar Bahasa Melayu Dan Bahasa Tagalog Untuk Kanak-Kanak</h1>
+</header>
+
+<div class="nav-container">
+    <button class="nav-btn active" onclick="showPage('animals')">Animals</button>
+    <button class="nav-btn" onclick="showPage('plants')">Plants</button>
+    <button class="nav-btn" onclick="showPage('human-body')">Human Body</button>
+</div>
+
+<!-- ANIMALS PAGE -->
+<div id="animals" class="page active-page">
+    <div class="category">
+        <h2 class="category-title">Mammals (Mamalia)</h2>
+        <div class="items-container">
+            <div class="item">
+                <img src="images/cat.jpg" alt="Cat" loading="lazy">
+                <div class="item-name" id="cat-name">Cat
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/cat-malay.mp3')">Kucing (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/cat-tagalog.mp3')">Pusa (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/dog.jpg" alt="Dog" loading="lazy">
+                <div class="item-name" id="dog-name">Dog
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/dog-malay.mp3')">Anjing (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/dog-tagalog.mp3')">Aso (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/lion.jpg" alt="Lion" loading="lazy">
+                <div class="item-name" id="lion-name">Lion
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/lion-malay.mp3')">Singa (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/lion-tagalog.mp3')">Leon (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/elephant.jpg" alt="Elephant" loading="lazy">
+                <div class="item-name" id="elephant-name">Elephant
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/elephant-malay.mp3')">Gajah (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/elephant-tagalog.mp3')">Elepante (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/giraffe.jpg" alt="Giraffe" loading="lazy">
+                <div class="item-name" id="giraffe-name">Giraffe
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/giraffe-malay.mp3')">Zirafah (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/giraffe-tagalog.mp3')">Giraffe (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category">
+        <h2 class="category-title">Birds (Burung)</h2>
+        <div class="items-container">
+            <div class="item">
+                <img src="images/eagle.jpg" alt="Eagle" loading="lazy">
+                <div class="item-name" id="eagle-name">Eagle
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/eagle-malay.mp3')">Burung Helang (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/eagle-tagalog.mp3')">Agila (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/parrot.jpg" alt="Parrot" loading="lazy">
+                <div class="item-name" id="parrot-name">Parrot
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/parrot-malay.mp3')">Burung Kakak Tua (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/parrot-tagalog.mp3')">Loro (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/owl.jpg" alt="Owl" loading="lazy">
+                <div class="item-name" id="owl-name">Owl
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/owl-malay.mp3')">Burung Hantu (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/owl-tagalog.mp3')">Kuwago (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/peacock.jpg" alt="Peacock" loading="lazy">
+                <div class="item-name" id="peacock-name">Peacock
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/peacock-malay.mp3')">Burung Merak (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/peacock-tagalog.mp3')">Ibong paboreal (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/flamingo.jpg" alt="Flamingo" loading="lazy">
+                <div class="item-name" id="flamingo-name">Flamingo
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/flamingo-malay.mp3')">Burung Flamingo (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/flamingo-tagalog.mp3')">Ibong flamingo (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category">
+        <h2 class="category-title">Reptiles (Reptilia)</h2>
+        <div class="items-container">
+            <div class="item">
+                <img src="images/snake.jpg" alt="Snake" loading="lazy">
+                <div class="item-name" id="snake-name">Snake
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/snake-malay.mp3')">Ular (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/snake-tagalog.mp3')">Ahas (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/turtle.jpg" alt="Turtle" loading="lazy">
+                <div class="item-name" id="turtle-name">Turtle
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/turtle-malay.mp3')">Penyu (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/turtle-tagalog.mp3')">Pagong (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/crocodile.jpg" alt="Crocodile" loading="lazy">
+                <div class="item-name" id="crocodile-name">Crocodile
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/crocodile-malay.mp3')">Buaya (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/crocodile-tagalog.mp3')">Buwaya (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/chameleon.jpg" alt="Chameleon" loading="lazy">
+                <div class="item-name" id="chameleon-name">Chameleon
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/chameleon-malay.mp3')">Sesumpah (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/chameleon-tagalog.mp3')">Hunyango (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/lizard.jpg" alt="Monitor Lizard" loading="lazy">
+                <div class="item-name" id="lizard-name">Monitor Lizard
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/lizard-malay.mp3')">Biawak (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/lizard-tagalog.mp3')">Bayawak (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category">
+        <h2 class="category-title">Aquatic Animals (Haiwan Akuatik)</h2>
+        <div class="items-container">
+            <div class="item">
+                <img src="images/whale.jpg" alt="Whale" loading="lazy">
+                <div class="item-name" id="whale-name">Whale
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/whale-malay.mp3')">Ikan Paus (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/whale-tagalog.mp3')">Balyena (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/shark.jpg" alt="Shark" loading="lazy">
+                <div class="item-name" id="shark-name">Shark
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/shark-malay.mp3')">Ikan Yu (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/shark-tagalog.mp3')">Pating (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/octopus.jpg" alt="Octopus" loading="lazy">
+                <div class="item-name" id="octopus-name">Octopus
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/octopus-malay.mp3')">Sotong Kurita (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/octopus-tagalog.mp3')">Pugita (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/shrimp.jpg" alt="Shrimp" loading="lazy">
+                <div class="item-name" id="shrimp-name">Shrimp
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/shrimp-malay.mp3')">Udang (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/shrimp-tagalog.mp3')">Hipon (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/jellyfish.jpg" alt="Jellyfish" loading="lazy">
+                <div class="item-name" id="jellyfish-name">Jellyfish
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/jellyfish-malay.mp3')">Ubur-ubur (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/jellyfish-tagalog.mp3')">Dikya (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/seahorse.jpg" alt="Seahorse" loading="lazy">
+                <div class="item-name" id="seahorse-name">Seahorse
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/seahorse-malay.mp3')">Kuda Laut (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/seahorse-tagalog.mp3')">Kabayo-kabayohan (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/seal.jpg" alt="Seal" loading="lazy">
+                <div class="item-name" id="seal-name">Seal
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/seal-malay.mp3')">Anjing Laut (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/seal-tagalog.mp3')">Poka (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/starfish.jpg" alt="Starfish" loading="lazy">
+                <div class="item-name" id="starfish-name">Starfish
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/starfish-malay.mp3')">Tapak Sulaiman (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/animals/starfish-tagalog.mp3')">Istarpis (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PLANTS PAGE -->
+<div id="plants" class="page">
+    <div class="category">
+        <h2 class="category-title">Flowers (Bunga)</h2>
+        <div class="items-container">
+            <div class="item">
+                <img src="images/rose.jpg" alt="Rose" loading="lazy">
+                <div class="item-name" id="rose-name">Rose
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/rose-malay.mp3')">Bunga Mawar (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/rose-tagalog.mp3')">Rosas (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/sunflower.jpg" alt="Sunflower" loading="lazy">
+                <div class="item-name" id="sunflower-name">Sunflower
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/sunflower-malay.mp3')">Bunga Matahari (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/sunflower-tagalog.mp3')">Mirasol (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/tulip.jpg" alt="Tulip" loading="lazy">
+                <div class="item-name" id="tulip-name">Tulip
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/tulip-malay.mp3')">Bunga Tulip (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/tulip-tagalog.mp3')">Tulip (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/rafflesia.jpg" alt="Rafflesia" loading="lazy">
+                <div class="item-name" id="rafflesia-name">Rafflesia
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/rafflesia-malay.mp3')">Bunga Pakma (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/rafflesia-tagalog.mp3')">Rafflesia (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/orchid.jpg" alt="Orchid" loading="lazy">
+                <div class="item-name" id="orchid-name">Orchid
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/orchid-malay.mp3')">Bunga Orkid (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/orchid-tagalog.mp3')">Orkid (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/jasmine.jpg" alt="Jasmine" loading="lazy">
+                <div class="item-name" id="jasmine-name">Jasmine
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/jasmine-malay.mp3')">Bunga Melati (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/jasmine-tagalog.mp3')">Sampaguita (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/hibiscus.jpg" alt="Hibiscus" loading="lazy">
+                <div class="item-name" id="hibiscus-name">Hibiscus
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/hibiscus-malay.mp3')">Bunga Raya (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/hibiscus-tagalog.mp3')">Gumamela (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/dahlia.jpg" alt="Dahlia" loading="lazy">
+                <div class="item-name" id="dahlia-name">Dahlia
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/dahlia-malay.mp3')">Bunga Dahlia (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/dahlia-tagalog.mp3')">Dahlia (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/lily.jpg" alt="Lily" loading="lazy">
+                <div class="item-name" id="lily-name">Lily
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/lily-malay.mp3')">Bunga Lili (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/lily-tagalog.mp3')">Liryo (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/oleander.jpg" alt="Oleander" loading="lazy">
+                <div class="item-name" id="oleander-name">Oleander
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/oleander-malay.mp3')">Bunga Oleander (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/oleander-tagalog.mp3')">Adelfa (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category">
+        <h2 class="category-title">Fruit Trees (Pokok Buah)</h2>
+        <div class="items-container">
+            <div class="item">
+                <img src="images/mango-tree.jpg" alt="Mango Tree" loading="lazy">
+                <div class="item-name" id="mango-name">Mango Tree
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/mango-malay.mp3')">Pokok Mangga (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/mango-tagalog.mp3')">Puno ng Mangga (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/durian-tree.jpg" alt="Durian Tree" loading="lazy">
+                <div class="item-name" id="durian-name">Durian Tree
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/durian-malay.mp3')">Pokok Durian (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/durian-tagalog.mp3')">Puno ng Durian (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/rambutan-tree.jpg" alt="Rambutan Tree" loading="lazy">
+                <div class="item-name" id="rambutan-name">Rambutan Tree
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/rambutan-malay.mp3')">Pokok Rambutan (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/rambutan-tagalog.mp3')">Puno ng Rambutan (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/mangosteen-tree.jpg" alt="Mangosteen Tree" loading="lazy">
+                <div class="item-name" id="mangosteen-name">Mangosteen Tree
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/mangosteen-malay.mp3')">Pokok Manggis (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/mangosteen-tagalog.mp3')">Puno ng Manggis (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/banana-tree.jpg" alt="Banana Tree" loading="lazy">
+                <div class="item-name" id="banana-name">Banana Tree
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/banana-malay.mp3')">Pokok Pisang (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/plants/banana-tagalog.mp3')">Puno ng Saging (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- HUMAN BODY PAGE -->
+<div id="human-body" class="page">
+    <div class="category">
+        <h2 class="category-title">Human Body (Badan Manusia)</h2>
+        <div class="items-container">
+            <div class="item">
+                <img src="images/head.jpg" alt="Head" loading="lazy">
+                <div class="item-name" id="head-name">Head
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/head-malay.mp3')">Kepala (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/head-tagalog.mp3')">Ulo (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/eye.jpg" alt="Eye" loading="lazy">
+                <div class="item-name" id="eye-name">Eye
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/eye-malay.mp3')">Mata (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/eye-tagalog.mp3')">Mata (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/nose.jpg" alt="Nose" loading="lazy">
+                <div class="item-name" id="nose-name">Nose
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/nose-malay.mp3')">Hidung (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/nose-tagalog.mp3')">Ilong (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/face.jpg" alt="Face" loading="lazy">
+                <div class="item-name" id="face-name">Face
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/face-malay.mp3')">Muka (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/face-tagalog.mp3')">Mukha (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/hands.jpg" alt="Hands" loading="lazy">
+                <div class="item-name" id="hands-name">Hands
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/hands-malay.mp3')">Tangan (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/hands-tagalog.mp3')">Kamay (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/legs.jpg" alt="Legs" loading="lazy">
+                <div class="item-name" id="legs-name">Legs
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/legs-malay.mp3')">Kaki (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/legs-tagalog.mp3')">Binti (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/arm.jpg" alt="Arm" loading="lazy">
+                <div class="item-name" id="arm-name">Arm
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/arm-malay.mp3')">Lengan (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/arm-tagalog.mp3')">Braso (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/elbow.jpg" alt="Elbow" loading="lazy">
+                <div class="item-name" id="elbow-name">Elbow
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/elbow-malay.mp3')">Siku (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/elbow-tagalog.mp3')">Siko (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/knee.jpg" alt="Knee" loading="lazy">
+                <div class="item-name" id="knee-name">Knee
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/knee-malay.mp3')">Lutut (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/knee-tagalog.mp3')">Tuhod (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/shoulder.jpg" alt="Shoulder" loading="lazy">
+                <div class="item-name" id="shoulder-name">Shoulder
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/shoulder-malay.mp3')">Bahu (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/shoulder-tagalog.mp3')">Balikat (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/ear.jpg" alt="Ear" loading="lazy">
+                <div class="item-name" id="ear-name">Ear
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/ear-malay.mp3')">Telinga (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/ear-tagalog.mp3')">Tainga (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/lip.jpg" alt="Lip" loading="lazy">
+                <div class="item-name" id="lip-name">Lip
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/lip-malay.mp3')">Bibir (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/lip-tagalog.mp3')">Labi (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/mouth.jpg" alt="Mouth" loading="lazy">
+                <div class="item-name" id="mouth-name">Mouth
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/mouth-malay.mp3')">Mulut (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/mouth-tagalog.mp3')">Bibig (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/chin.jpg" alt="Chin" loading="lazy">
+                <div class="item-name" id="chin-name">Chin
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/chin-malay.mp3')">Dagu (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/chin-tagalog.mp3')">Baba (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/hair.jpg" alt="Hair" loading="lazy">
+                <div class="item-name" id="hair-name">Hair
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/hair-malay.mp3')">Rambut (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/hair-tagalog.mp3')">Buhok (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/tongue.jpg" alt="Tongue" loading="lazy">
+                <div class="item-name" id="tongue-name">Tongue
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/tongue-malay.mp3')">Lidah (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/tongue-tagalog.mp3')">Dila (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/forehead.jpg" alt="Forehead" loading="lazy">
+                <div class="item-name" id="forehead-name">Forehead
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/forehead-malay.mp3')">Dahi (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/forehead-tagalog.mp3')">Daliri (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/chest.jpg" alt="Chest" loading="lazy">
+                <div class="item-name" id="chest-name">Chest
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/chest-malay.mp3')">Dada (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/chest-tagalog.mp3')">Dibdib (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/finger.jpg" alt="Finger" loading="lazy">
+                <div class="item-name" id="finger-name">Finger
+                    <div class="sound-buttons">
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/finger-malay.mp3')">Jari (BM)</button>
+                        <button class="sound-icon" onclick="playAudio('sounds/human-body/finger-tagalog.mp3')">Daliri (Tagalog)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<footer>
+    <p>© 2025 E-kamus Bergambar Bahasa Melayu Dan Bahasa Tagalog Untuk Kanak-Kanak </p>
+</footer>
+
+<script>
+    // Play audio from local files
+    function playAudio(audioPath) {
+      const audio = new Audio(audioPath);
+      audio.play().catch(e => console.error("Audio error:", e));
+
+      // Visual feedback (optional)
+      const itemId = audioPath.split('/').pop().split('-')[0] + '-name';
+      const element = document.getElementById(itemId);
+      if (element) {
+        element.style.transform = 'scale(1.1)';
+        element.style.backgroundColor = '#ffeb3b';
+        setTimeout(() => {
+          element.style.transform = '';
+          element.style.backgroundColor = '';
+        }, 300);
+      }
+    }
+
+    // Show specific page and hide others
+    function showPage(pageId) {
+      // Hide all pages
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active-page');
+      });
+
+      // Show selected page
+      document.getElementById(pageId).classList.add('active-page');
+
+      // Update active nav button
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`.nav-btn[onclick="showPage('${pageId}')"]`).classList.add('active');
+    }
+
+    // Initialize the page
+    window.onload = function() {
+      showPage('animals');
+    };
+</script>
+</body>
+</html>
